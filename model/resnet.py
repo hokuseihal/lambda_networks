@@ -1,6 +1,7 @@
 import torch
 from torch import Tensor
 import torch.nn as nn
+import torch.nn.functional as F
 from typing import Type, Any, Callable, Union, List, Optional
 from layer.lambdalayer import Lambda
 
@@ -191,7 +192,8 @@ class LambdaBottleneck(nn.Module):
 
         if self.downsample is not None:
             identity = self.downsample(x)
-
+        if identity.shape[2:]!=out.shape[2:]:
+            identity=F.interpolate(identity,size=out.shape[2:])
         out += identity
         out = self.relu(out)
 

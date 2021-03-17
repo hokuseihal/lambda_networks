@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Lambda(nn.Module):
-    def __init__(self,d,k=16,u=1,h=4,r=63):
+    def __init__(self,d,k=16,u=1,h=4,r=23):
         super(Lambda,self).__init__()
         self.h=h
         self.k=k
