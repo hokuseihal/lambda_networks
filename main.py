@@ -5,9 +5,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 from torchvision.utils import save_image
-import src.core as Co
-import src.utils as U
-from src.model.resnet import resnet50,lambdaresnet50
+import core as Co
+import utils as U
+from model.resnet import resnet50,lambdaresnet50
 import os
 import pickle as pkl
 def operate(phase):
