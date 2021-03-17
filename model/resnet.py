@@ -351,7 +351,7 @@ def resnet50(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> 
     return _resnet('resnet50', Bottleneck, [3, 4, 6, 3], pretrained, progress,
                    **kwargs)
 
-def lambdaresnet50(**kwargs):
+def lambdaresnet50(pretrained=False,progress=True,**kwargs):
     return _resnet('resnet50',LambdaBottleneck,[3,4,6,3],**kwargs)
 
 def resnet101(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> ResNet:
