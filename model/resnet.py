@@ -159,7 +159,7 @@ class LambdaBottleneck(nn.Module):
         dilation: int = 1,
         norm_layer: Optional[Callable[..., nn.Module]] = None
     ) -> None:
-        super(Bottleneck, self).__init__()
+        super(LambdaBottleneck, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.)) * groups
@@ -352,7 +352,7 @@ def resnet50(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> 
                    **kwargs)
 
 def lambdaresnet50(pretrained=False,progress=True,**kwargs):
-    return _resnet('resnet50',LambdaBottleneck,[3,4,6,3],**kwargs)
+    return _resnet('resnet50',LambdaBottleneck,[3,4,6,3],pretrained,progress,**kwargs)
 
 def resnet101(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> ResNet:
     r"""ResNet-101 model from
