@@ -56,9 +56,9 @@ if __name__=='__main__':
         args=chk['args']
     else:
         if args.dataset=='cifar100':
-            trainloader=torch.utils.data.DataLoader(torchvision.datasets.CIFAR10('../data',True,T.Compose([T.Resize(args.size),T.ToTensor()]),download=True),batch_size=args.batchsize,num_workers=4,shuffle=True)
-            valloader=torch.utils.data.DataLoader(torchvision.datasets.CIFAR10('../data',False,T.Compose([T.Resize(args.size),T.ToTensor()]),download=True),batch_size=args.batchsize,num_workers=4,shuffle=True)
-            num_classes=101
+            trainloader=torch.utils.data.DataLoader(torchvision.datasets.CIFAR100('../data',True,T.Compose([T.Resize(args.size),T.ToTensor()]),download=True),batch_size=args.batchsize,num_workers=4,shuffle=True)
+            valloader=torch.utils.data.DataLoader(torchvision.datasets.CIFAR100('../data',False,T.Compose([T.Resize(args.size),T.ToTensor()]),download=True),batch_size=args.batchsize,num_workers=4,shuffle=True)
+            num_classes=100
         else:
             assert False,'cifar100 is allowed only.'
         if args.optimizer=='adam':
