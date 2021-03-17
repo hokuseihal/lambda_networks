@@ -47,7 +47,6 @@ if __name__=='__main__':
     device='cuda' if torch.cuda.is_available() else 'cpu'
     savefolder='data/'+args.savefolder
     os.makedirs(savefolder,exist_ok=True)
-    device='cpu'
     if args.dataset == 'cifar100':
         trainloader = torch.utils.data.DataLoader(
             torchvision.datasets.CIFAR100('../data', True, T.Compose([T.Resize(args.size), T.ToTensor()]),
