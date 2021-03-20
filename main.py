@@ -8,7 +8,9 @@ from torchvision.utils import save_image
 import core as Co
 import utils as U
 from model.resnet import resnet50,lambdaresnet50
+from model.lambda_resnet import lambda_resnet50
 import os
+import time
 import pickle as pkl
 def operate(phase):
     if phase=='train':
@@ -18,6 +20,7 @@ def operate(phase):
         model.eval()
         loader=valloader
     for i,(data,target)in enumerate(loader):
+        start = time.time()
         data=data.to(device)
         target=target.to(device)
         output=model(data)
@@ -26,7 +29,7 @@ def operate(phase):
         optimizer.step()
         optimizer.zero_grad()
         acc=U.acc(output,target)
-        print(f'{e}/{epoch}:{i}/{len(loader)}, loss:{loss:.2f},acc":{acc:.2f}')
+        print(f'{e}/{epoch}:{i}/{len(loader)}, loss:{loss:.2f},acc":{acc:.2f},time:{time.time()-start:.4f}')
         Co.addvalue(writer,'loss',loss.item(),e)
         Co.addvalue(writer,'acc',acc.item(),e)
 
@@ -40,7 +43,7 @@ if __name__=='__main__':
     parser.add_argument('--epoch',default=100,type=int)
     parser.add_argument('--savefolder',default='tmp')
     parser.add_argument('--checkpoint',default=None)
-    parser.add_argument('--size',default=64,type=int)
+    parser.add_argument('--size',default=128,type=int)
     parser.add_argument('--feature',default=128,type=int)
     args=parser.parse_args()
     epoch=args.epoch
@@ -55,8 +58,17 @@ if __name__=='__main__':
             torchvision.datasets.CIFAR100('../data', False, T.Compose([T.Resize(args.size), T.ToTensor()]),
                                           download=True), batch_size=args.batchsize, num_workers=4, shuffle=True)
         num_classes = 100
+
+    elif args.dataset=='cifar10':
+        trainloader = torch.utils.data.DataLoader(
+            torchvision.datasets.CIFAR10('../data', True, T.Compose([T.Resize(args.size), T.ToTensor()]),
+                                          download=True), batch_size=args.batchsize, num_workers=4, shuffle=True)
+        valloader = torch.utils.data.DataLoader(
+            torchvision.datasets.CIFAR10('../data', False, T.Compose([T.Resize(args.size), T.ToTensor()]),
+                                          download=True), batch_size=args.batchsize, num_workers=4, shuffle=True)
+        num_classes = 10
     else:
-        assert False, 'cifar100 is allowed only.'
+        assert False, 'cifar100 | cifar10 are allowed only.'
     if args.checkpoint:
         chk=torch.load(args.checkpoint)
         model=chk['model']

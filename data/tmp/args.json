@@ -1,1 +1,1 @@
-{"batchsize": 8, "model": "lambdaresnet", "dataset": "cifar100", "optimizer": "adam", "epoch": 100, "savefolder": "tmp", "checkpoint": null, "size": 64, "feature": 128}
+{"batchsize": 32, "model": "resnet", "dataset": "cifar100", "optimizer": "adam", "epoch": 100, "savefolder": "tmp", "checkpoint": null, "size": 128, "feature": 128}

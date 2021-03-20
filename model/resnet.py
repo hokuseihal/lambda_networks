@@ -168,7 +168,7 @@ class LambdaBottleneck(nn.Module):
         self.conv1 = conv1x1(inplanes, width)
         self.bn1 = norm_layer(width)
         # self.conv2 = conv3x3(width, width, stride, groups, dilation)
-        self.conv2=Lambda(width)
+        self.conv2=Lambda(width,stride=stride)
         self.bn2 = norm_layer(width)
         self.conv3 = conv1x1(width, planes * self.expansion)
         self.bn3 = norm_layer(planes * self.expansion)
@@ -192,8 +192,8 @@ class LambdaBottleneck(nn.Module):
 
         if self.downsample is not None:
             identity = self.downsample(x)
-        if identity.shape[2:]!=out.shape[2:]:
-            identity=F.interpolate(identity,size=out.shape[2:])
+        # if identity.shape[2:]!=out.shape[2:]:
+        #     identity=F.interpolate(identity,size=out.shape[2:])
         out += identity
         out = self.relu(out)
 

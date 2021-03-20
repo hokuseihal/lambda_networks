@@ -1,8 +1,9 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class Lambda(nn.Module):
-    def __init__(self,d,k=16,u=1,h=4,r=23):
+    def __init__(self,d,k=16,u=1,h=4,r=23,stride=1):
         super(Lambda,self).__init__()
         self.h=h
         self.k=k
@@ -15,6 +16,7 @@ class Lambda(nn.Module):
         self.vbn=nn.BatchNorm2d(u*v)
         assert r%2==1
         self.embedings=nn.Conv3d(u,k,(1,r,r),padding=(0,(r-1)//2,(r-1)//2))
+        self.stride=stride
 
     def forward(self,x):
         B,C,H,W=x.shape
@@ -28,6 +30,8 @@ class Lambda(nn.Module):
         c_y=torch.einsum('bhkn,bkv->bhvn',q,c_lam)
         p_y=torch.einsum('bhkn,bkvn->bhvn',q,p_lam)
         ret=(c_y+p_y).reshape(B,C,H,W)
+        if self.stride!=1:
+            ret=F.interpolate(ret,scale_factor=1/self.stride)
         return ret
 
 if __name__=='__main__':
